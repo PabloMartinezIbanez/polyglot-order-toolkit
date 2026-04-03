@@ -1,0 +1,5 @@
+build/
+reports_for_IA/
+.pytest_cache/
+__pycache__/
+*.pyc

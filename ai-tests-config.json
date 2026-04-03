@@ -1,0 +1,26 @@
+{
+  "test_suites": [
+    {
+      "name": "python-unit-tests",
+      "framework": "pytest",
+      "setup": "python3 -m pip install -r requirements/python_requirements.txt",
+      "command": "PYTHONPATH=src/python python3 -m pytest tests/python/test_order_totals.py --tb=long -v",
+      "test_dir": "tests/python/",
+      "timeout": 120
+    },
+    {
+      "name": "javascript-unit-tests",
+      "framework": "node",
+      "command": "node --test tests/javascript/test_order_validator.js",
+      "test_dir": "tests/javascript/",
+      "timeout": 120
+    },
+    {
+      "name": "java-unit-tests",
+      "framework": "generic",
+      "command": "bash scripts/run_java_tests.sh",
+      "test_dir": "tests/java/",
+      "timeout": 120
+    }
+  ]
+}
