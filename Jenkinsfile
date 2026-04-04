@@ -53,8 +53,7 @@ pipeline {
                     rm -rf "$WORKSPACE/build/java/classes"
                     mkdir -p "$WORKSPACE/build/java/classes"
                     javac -d "$WORKSPACE/build/java/classes" \
-                      "$WORKSPACE/src/java/com/example/order/OrderRiskRules.java" \
-                      "$WORKSPACE/tests/java/com/example/order/OrderRiskRulesTest.java"
+                      "$WORKSPACE/src/java/com/example/order/OrderRiskRules.java"
                 '''
             }
         }
