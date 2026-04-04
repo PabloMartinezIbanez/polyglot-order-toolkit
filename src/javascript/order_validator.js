@@ -41,11 +41,7 @@ function isPriorityOrder(order) {
   const totalAmount = Number(order.totalAmount || 0);
 
   if (shippingMethod === 'express') {
-    if (totalAmount >= 150) {
-      return true;
-    } else {
-      return false;
-    }
+    return totalAmount >= 150;
   } else {
     return false;
   }

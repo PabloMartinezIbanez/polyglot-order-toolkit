@@ -8,7 +8,6 @@ REGION_TAX_RATES = {
 def calculate_order_total(order):
     items = order.get("items", [])
     subtotal = round(sum(item["quantity"] * item["unit_price"] for item in items), 3)
-    unused_order_label = f"items:{len(items)}"
     discount_rate = _discount_rate_for_tier(order.get("customer_tier"))
     discount = round(subtotal * discount_rate, 3)
     taxable_amount = subtotal - discount
