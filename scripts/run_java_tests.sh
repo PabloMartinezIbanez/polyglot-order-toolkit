@@ -9,6 +9,7 @@ mkdir -p "$BUILD_DIR"
 
 javac -d "$BUILD_DIR" \
   "$ROOT_DIR/src/java/com/example/order/OrderRiskRules.java" \
+  "$ROOT_DIR/tests/java/com/example/order/Test.java" \
   "$ROOT_DIR/tests/java/com/example/order/OrderRiskRulesTest.java"
 
 java -cp "$BUILD_DIR" com.example.order.OrderRiskRulesTest

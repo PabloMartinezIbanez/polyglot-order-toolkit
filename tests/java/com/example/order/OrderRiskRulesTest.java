@@ -1,23 +1,29 @@
 package com.example.order;
 
+import org.junit.Test;
+
 public class OrderRiskRulesTest {
     public static void main(String[] args) {
-        shouldScoreExpressInternationalOrdersHigher();
-        shouldRequireManualReviewForHighRiskOrders();
-        shouldSkipManualReviewForStableDomesticOrders();
+        OrderRiskRulesTest test = new OrderRiskRulesTest();
+        test.shouldScoreExpressInternationalOrdersHigher();
+        test.shouldRequireManualReviewForHighRiskOrders();
+        test.shouldSkipManualReviewForStableDomesticOrders();
     }
 
-    private static void shouldScoreExpressInternationalOrdersHigher() {
+    @Test
+    public void shouldScoreExpressInternationalOrdersHigher() {
         int score = OrderRiskRules.calculateRiskScore("PT", true, 820.0, 4);
         assertEquals(90, score, "Express international orders should score higher.");
     }
 
-    private static void shouldRequireManualReviewForHighRiskOrders() {
+    @Test
+    public void shouldRequireManualReviewForHighRiskOrders() {
         boolean result = OrderRiskRules.requiresManualReview("US", true, 910.0, 3);
         assertTrue(result, "High risk orders should require manual review.");
     }
 
-    private static void shouldSkipManualReviewForStableDomesticOrders() {
+    @Test
+    public void shouldSkipManualReviewForStableDomesticOrders() {
         boolean result = OrderRiskRules.requiresManualReview("ES", false, 120.0, 1);
         assertFalse(result, "Stable domestic orders should not require manual review.");
     }
