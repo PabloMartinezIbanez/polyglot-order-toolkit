@@ -1,5 +1,6 @@
 package com.example.order;
 
+@SuppressWarnings("java:S2187")
 public class OrderRiskRulesTest {
     public static void main(String[] args) {
         shouldScoreExpressInternationalOrdersHigher();

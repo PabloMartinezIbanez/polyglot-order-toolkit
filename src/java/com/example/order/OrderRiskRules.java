@@ -7,7 +7,6 @@ public final class OrderRiskRules {
     public static int calculateRiskScore(String countryCode, boolean expressShipping, double orderTotal, int previousIncidents) {
         String normalizedCountry = countryCode == null ? "ES" : countryCode.toUpperCase();
         int score = 10;
-        int unusedThreshold = 75;
 
         if (!"ES".equals(normalizedCountry)) {
             score += 25;
@@ -31,11 +30,7 @@ public final class OrderRiskRules {
     public static boolean requiresManualReview(String countryCode, boolean expressShipping, double orderTotal, int previousIncidents) {
         int riskScore = calculateRiskScore(countryCode, expressShipping, orderTotal, previousIncidents);
 
-        if (riskScore >= 70) {
-            return true;
-        } else {
-            return false;
-        }
+        return riskScore >= 70;
     }
 
     public static String reviewLane(String countryCode, boolean expressShipping) {
