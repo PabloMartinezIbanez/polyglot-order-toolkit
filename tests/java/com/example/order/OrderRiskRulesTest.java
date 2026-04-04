@@ -1,42 +1,25 @@
 package com.example.order;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 public class OrderRiskRulesTest {
-    public static void main(String[] args) {
-        shouldScoreExpressInternationalOrdersHigher();
-        shouldRequireManualReviewForHighRiskOrders();
-        shouldSkipManualReviewForStableDomesticOrders();
-    }
 
-    private static void shouldScoreExpressInternationalOrdersHigher() {
+    @Test
+    public void shouldScoreExpressInternationalOrdersHigher() {
         int score = OrderRiskRules.calculateRiskScore("PT", true, 820.0, 4);
-        assertEquals(90, score, "Express international orders should score higher.");
+        assertEquals("Express international orders should score higher.", 90, score);
     }
 
-    private static void shouldRequireManualReviewForHighRiskOrders() {
+    @Test
+    public void shouldRequireManualReviewForHighRiskOrders() {
         boolean result = OrderRiskRules.requiresManualReview("US", true, 910.0, 3);
-        assertTrue(result, "High risk orders should require manual review.");
+        assertTrue("High risk orders should require manual review.", result);
     }
 
-    private static void shouldSkipManualReviewForStableDomesticOrders() {
+    @Test
+    public void shouldSkipManualReviewForStableDomesticOrders() {
         boolean result = OrderRiskRules.requiresManualReview("ES", false, 120.0, 1);
-        assertFalse(result, "Stable domestic orders should not require manual review.");
-    }
-
-    private static void assertEquals(int expected, int actual, String message) {
-        if (expected != actual) {
-            throw new AssertionError(message + " Expected " + expected + " but got " + actual + ".");
-        }
-    }
-
-    private static void assertTrue(boolean value, String message) {
-        if (!value) {
-            throw new AssertionError(message);
-        }
-    }
-
-    private static void assertFalse(boolean value, String message) {
-        if (value) {
-            throw new AssertionError(message);
-        }
+        assertFalse("Stable domestic orders should not require manual review.", result);
     }
 }
