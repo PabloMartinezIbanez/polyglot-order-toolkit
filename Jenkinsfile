@@ -24,6 +24,8 @@ pipeline {
         LLM_API_KEY_VALUE = credentials('LLM_API_KEY_VALUE')
         Github_AI_Auth = credentials('Github_AI_Auth')
         AI_REPORTS_DIR = 'reports_for_IA'
+        AI_ALREADY_APPLIED = 'false'
+        AI_RUN_SONAR_AND_FIX = 'false'
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
     }
 
@@ -110,9 +112,30 @@ pipeline {
             }
         }
 
-        stage('Scan') {
+        stage('Detect Previous AI Fix') {
             when {
                 expression { env.CHANGE_ID && !((env.CHANGE_BRANCH ?: '').startsWith('ai-fix/')) }
+            }
+            steps {
+                script {
+                    env.AI_ALREADY_APPLIED = DetectPreviousAIFix(
+                        repoSlug: 'PabloMartinezIbanez/polyglot-order-toolkit',
+                        reportsDir: env.AI_REPORTS_DIR,
+                        sourceBranch: env.CHANGE_BRANCH
+                    ) ? 'true' : 'false'
+
+                    def runSonarAndFix =
+                        env.CHANGE_ID &&
+                        !((env.CHANGE_BRANCH ?: '').startsWith('ai-fix/')) &&
+                        env.AI_ALREADY_APPLIED != 'true'
+                    env.AI_RUN_SONAR_AND_FIX = runSonarAndFix ? 'true' : 'false'
+                }
+            }
+        }
+
+        stage('Scan') {
+            when {
+                expression { env.AI_RUN_SONAR_AND_FIX == 'true' }
             }
             steps {
                 script {
@@ -138,7 +161,7 @@ pipeline {
 
         stage('Quality Gate') {
             when {
-                expression { env.CHANGE_ID && !((env.CHANGE_BRANCH ?: '').startsWith('ai-fix/')) }
+                expression { env.AI_RUN_SONAR_AND_FIX == 'true' }
             }
             steps {
                 script {
@@ -149,7 +172,7 @@ pipeline {
 
         stage('Fix Issues with AI') {
             when {
-                expression { env.CHANGE_ID && !((env.CHANGE_BRANCH ?: '').startsWith('ai-fix/')) }
+                expression { env.AI_RUN_SONAR_AND_FIX == 'true' }
             }
             steps {
                 echo "Attempting to fix issues with AI..."
