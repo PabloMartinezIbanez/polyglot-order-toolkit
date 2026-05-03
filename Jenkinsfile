@@ -104,8 +104,6 @@ pipeline {
                         failedSuites << 'java'
                     }
 
-                    archiveArtifacts artifacts: "${env.AI_REPORTS_DIR}/*", fingerprint: true, allowEmptyArchive: true
-
                     if (failedSuites) {
                         error("Test suites failed: ${failedSuites.join(', ')}")
                     }
@@ -177,7 +175,7 @@ pipeline {
             steps {
                 echo "Attempting to fix issues with AI..."
                 FixWithAI(
-                    llmModel: 'gemini-3.1-pro-preview',
+                    llmModel: 'kimi-k2-instruct',
                     llmCredentialId: 'LLM_API_KEY_VALUE',
                     githubCredentialId: 'Github_AI_Auth',
                     repoSlug: 'PabloMartinezIbanez/polyglot-order-toolkit',
@@ -190,6 +188,7 @@ pipeline {
 
     post {
         always {
+            archiveArtifacts artifacts: "${env.AI_REPORTS_DIR}/*", fingerprint: true, allowEmptyArchive: true
             cleanWs(
                 cleanWhenSuccess: true,
                 cleanWhenFailure: false,
